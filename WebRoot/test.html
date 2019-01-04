@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>test.html</title>
+
+<meta name="keywords" content="keyword1,keyword2,keyword3">
+<meta name="description" content="this is my page">
+<meta name="content-type" content="text/html; charset=UTF-8">
+
+<!--<link rel="stylesheet" type="text/css" href="./styles.css">-->
+
+</head>
+
+<body>
+<input width="50px" height="100px" type="text">
+<button onclick=""></button>
+<div id="aa"></div>
+</body>
+<script src="js/jquery.min.js"></script>
+<script type="text/javascript">
+function jk(){
+	$.ajax({
+		type : "get",
+		url : "findZonenoteById.do",
+		data : {
+			Id : 10
+		},
+		dataType : "json",
+		success : function(data) {
+			console.log(data);
+			document.getElementById("aa").innerHTML=data[0].data.content;
+
+		}
+	});
+	}
+</script>
+</html>

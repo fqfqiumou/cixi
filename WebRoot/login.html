@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Title</title>
+</head>
+<link rel="stylesheet" href="css/base.css">
+<style>
+    html,body{
+        width: 100%;
+        height: 100%;
+    }
+    body {
+        font: normal 100% Helvetica, Arial, sans-serif;
+    }
+    .container{
+        width: 100%;
+        height: 100%;
+          background: url("img/bg.png") no-repeat;
+        background-size:100% 100%;
+    }
+    .form-login {
+        position: absolute;
+        background-color:#FFFCF6;
+        left:50%;
+        top:50%;
+        width: 30%;
+        height: 60%;
+        transform: translate(-50%,-50%);
+    }
+    .form-login h2{
+        width: 80%;
+        height: 10%;
+        background-size:100% 100%;
+        margin:auto;
+        margin-bottom: 10%;
+    }
+    .form-login input{
+        width: 90%;
+        margin-left:8%;
+        height: 35px;
+        text-align: center;
+        border: 1px solid #C9C9C9;
+        background: rgba(0,0,0,0);
+        color: #fff;
+        font-size: 28px;
+    }
+    .username{
+          width: 95%;
+          height: 32px;
+          position: relative;
+          margin-bottom: 10%;
+          color:#373737;
+          font-size:13px;
+      }
+    .username .ico-username{
+        position: absolute;
+        height: 15px;
+        top:45%;
+        left:12%;
+        transform: translateY(-50%);
+    }
+    .password{
+        width: 95%;
+        height: 32px;
+        position: relative;
+        margin-bottom: 5%;
+        color:#373737;
+        font-size:13px;
+    }
+    .password .ico-password{
+        position: absolute;
+        height: 20px;
+        top:55%;
+        left:12%;
+        transform: translateY(-50%);
+        text-align: center;
+    }
+    .form-login input[type="button"]{
+        background-color:#F16F20;
+        border: none;
+        cursor: pointer;
+        margin-bottom: 5%;
+    }
+    .form-login .ico-remember{
+        display:inline-block;
+        vertical-align:middle;
+        background: url("img/gouzi.png");
+        width: 16px;
+        height: 16px;
+        margin-right: 2%;
+        margin-left: 5%;
+        cursor: pointer;
+
+
+    }
+    .form-login .rememberPassword{
+        color: #A4A3A3;
+        margin-bottom: 5%;
+        float: left;
+        width: 30%;
+        font-size:13px;
+    }
+    .form-login .modifyPassword{
+        float: right;
+        width: 50%;
+        color:#fff;
+        text-align: right;
+        padding-right: 8%;
+        box-sizing: border-box;
+        font-size:13px;
+    }
+    .form-login .forgetPassword{
+        text-align: center;
+        color: #fff;
+    }
+    .form-login .forgetPassword a{
+        text-decoration: underline;
+    }
+    input::-webkit-input-placeholder{
+        color:#fff;
+    }
+    input::-moz-placeholder{   /* Mozilla Firefox 19+ */
+        color:#fff;
+    }
+    input:-moz-placeholder{    /* Mozilla Firefox 4 to 18 */
+        color:#fff;
+    }
+    input:-ms-input-placeholder{  /* Internet Explorer 10-11 */
+        color:#fff;
+    }
+</style>
+<body>
+    <div class="container">
+        <div class="form-login">
+            <h2 style="margin-left: 25%;margin-bottom:5%;margin-top:15%;color:#000000;">慈溪共青团网站管理</h2>
+                <div class="username"><span class="ico-username">用户名：</span><input type="text"></div>
+                <div class="password"><span class="ico-password">密 &nbsp&nbsp码：</span><input type="password"></div>
+                <br/>
+                <div class="input-group">
+                    <input type="checkbox" style="width:30px;height:17px;float:left;margin-top: 1px"/>
+                    <div class="rememberPassword">记住密码</div>
+                    <div class="modifyPassword"><a style=";color:#A4A3A3" href="./forgetPassword.html">修改密码</a></div>
+                </div>
+                <input type="button" style="font-size:15px;font-weight:bold;width:87%" value="登录">
+                <!--div class="forgetPassword">忘记密码？<a href="modifyPassword.html">请点击这里</a></div-->
+        </div>
+    </div>
+</body>
+</html>
+<script src="js/jquery.min.js"></script> 
+<script src="libs/layer/layer.js"></script>
+<script>
+    var icoRemember=document.querySelector(".rememberPassword .ico-remember");
+    var btnlogin=document.querySelector(".form-login input[value='登录']");
+    var icoRemenberIndex=0;
+    if(localStorage.getItem("dbUsername")&&localStorage.getItem("dbPassword")){
+        icoRemember.style.backgroundImage="url(\"img/gouzi1.png\")";
+        icoRemenberIndex++;
+        $(".username input").val(localStorage.getItem("dbUsername"));
+        $(".password input").val(localStorage.getItem("dbPassword"));
+    }
+    btnlogin.onclick=function(){
+        if($(".username input").val().trim()==""){
+            layer.msg('请输入用户名');
+            return false;
+        }
+        if($(".password input").val().trim()==""){
+            layer.msg('请输入密码');
+            return false;
+        }
+        var data={name:$(".username input").val(),password:$(".password input").val()};
+        $.ajax({
+            type:"post",
+            url:"login.do",
+            data:data,
+            dataType:"json",
+            success:function(data) {
+            console.log(data);
+                if(data[0].message!="成功"){
+                    alert(data[0].message);
+                }else{
+                 //   alert("跳页面");
+                   location.href="admin/sglbaseShow.jsp";
+                    if (icoRemenberIndex%2==1){
+                        localStorage.setItem("dbUsername",$(".username input").val());
+                        localStorage.setItem("dbPassword",$(".password input").val());
+                    }else{
+                        localStorage.removeItem("dbUsername");
+                        localStorage.removeItem("dbPassword");
+                    }
+                }
+
+            }
+        });
+    }
+    icoRemember.onclick=function(){
+        if(icoRemenberIndex%2==0){
+            icoRemember.style.backgroundImage="url(\"img/gouzi1.png\")";
+            icoRemenberIndex++;
+        }else{
+            icoRemember.style.backgroundImage="url(\"img/gouzi.png\")";
+            icoRemenberIndex++;
+        }
+    }
+    $(document).keyup(function (e) {//捕获文档对象的按键弹起事件
+        if (e.keyCode == 13) {//按键信息对象以参数的形式传递进来了
+            //此处编写用户敲回车后的代码
+            btnlogin.onclick();
+        }
+    });
+</script>

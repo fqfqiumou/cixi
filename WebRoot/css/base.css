@@ -1,0 +1,26 @@
+
+@charset 'UTF-8';
+body,h1,h2,h3,h4,h5,h6,p,dd{margin:0; font-weight: 100;}
+ul,ol,dl{margin:0;padding:0;list-style:none;}
+img{border:none;vertical-align:middle;}
+a{text-decoration:none;color:#000;color:inherit;outline:none;}
+body{ margin: 0;padding: 0;font-family: "微软雅黑";}
+button{outline: none; border: none;}
+input{outline: none;}
+//单行省略号
+.ellipsis{
+	overflow: hidden;
+text-overflow:ellipsis;
+white-space: nowrap;
+}
+/*浮动*/
+.clearfix:after{
+	content: '';
+	display: block;
+	height: 0;
+	line-height: 0;
+	visibility: hidden;
+	clear: both;
+}
+.fl-l{float:left;} .fl-r{float:right;}
+
